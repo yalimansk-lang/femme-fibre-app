@@ -2,43 +2,33 @@ import json
 
 def lambda_handler(event, context):
     """
-    AWS Lambda Serverless handler for Femme.Fibre custom dress inquiries.
-    Bypasses standard containers to process serverless form actions.
+    AWS Lambda Serverless Function Node
+    Parses and packages incoming Femme Fibre textile design payload requests.
     """
+    # 1. Parse incoming string body parameters safely
     try:
-        # Check if the event body contains data from our frontend form
-        body = json.loads(event.get("body", "{}")) if isinstance(event.get("body"), str) else event.get("body", {})
-        
-        client_name = body.get("client_name", "Anonymous Client")
-        gargment_idea = body.get("garment_idea", "Bespoke Evening Gown")
-        contact_email = body.get("email", "")
-        
-        if not contact_email:
-            return {
-                "statusCode": 400,
-                "headers": {"Access-Control-Allow-Origin": "*"},
-                "body": json.dumps({"error": "Contact email is required for custom requests."})
-            }
-            
-        # Simulating a serverless cloud execution database save
-        response_msg = f"Thank you {client_name}! Your custom inquiry for a '{gargment_idea}' has been securely saved in our serverless cloud ledger. A Femme.Fibre stylist will contact you."
-        
-        return {
-            "statusCode": 201,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"  # Needed for cross-origin frontend calls
-            },
-            "body": json.dumps({
-                "status": "Serverless Processing Successful",
-                "message": response_msg,
-                "inquiry_received": True
-            })
-        }
-        
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
-        }
-    
+        body = json.loads(event.get("body", "{}"))
+    except Exception:
+        body = event
+
+    client_name = body.get("name", "anonymous client")
+    client_email = body.get("email", "no routing email provided")
+    design_notes = body.get("notes", "no text parameters")
+
+    # 2. Simulate storage ledger or automated email router dispatch trigger
+    print(f"Serverless Payload Received: {client_name} ({client_email})")
+    print(f"Textile Request Parameters: {design_notes}")
+
+    # 3. Construct standard API Gateway response object
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"  # Unblocks cross-origin web browser traffic
+        },
+        "body": json.dumps({
+            "status": "transmitted",
+            "message": f"pattern payload registered for {client_name}",
+            "routing_ledger": f"dispatch copy queued for delivery to {client_email}"
+        })
+    }
