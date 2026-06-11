@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>femme.fibre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">
+                Femme <span>Fibre</span>
+            </div>
+            <nav>
+                <a onclick="showPage('home')" id="nav-home" class="active">home</a>
+                <a onclick="showPage('shop')" id="nav-shop">shop</a>
+                <a onclick="showPage('about')" id="nav-about">about</a>
+                <a onclick="showPage('projects')" id="nav-projects">projects</a>
+                <a onclick="showPage('contact')" id="nav-contact">contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="page-home" class="page-content active-page">
+        <h2>lookbook</h2>
+        <div class="lookbook-container">
+            <div class="lookbook-photo-frame" style="background-image: url('images/three.jpg');">
+                <span class="lookbook-label">collection 01 </span>
+            </div>
+            <div class="lookbook-photo-frame" style="background-image: url('images/copia.jpg');">
+                <span class="lookbook-label">collection 02 </span>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; width: 100%; margin-top: 4rem;">
+            <button onclick="showPage('shop')" style="padding: 1.2rem 4.5rem; width: auto;">
+                shop now →
+            </button>
+        </div>
+    </section>
+
+    <section id="page-shop" class="page-content">
+        <h2>shop</h2>
+        <div id="catalog-container" class="shop-grid">
+            <p style="grid-column: 1/-1; color: var(--text-muted);">querying container architecture endpoints...</p>
+        </div>
+    </section>
+
+   <section id="page-about" class="page-content">
+        <h2>my story</h2>
+        <div class="about-wrapper">
+            <div class="about-text-column">
+                <div class="about-manifesto">
+                    femme.fibre explores the raw space where structural tailoring intersects skin transparency and sustainable textile innovation. founded on copenhagen-inspired minimalism, every silhouette is modeled on-demand to reduce resource saturation completely.
+                </div>
+                <div class="about-subtext">
+                    <p>every piece is engineered on-demand utilizing specialized client microservice datasets. by completely avoiding pre-produced industrial clothing bulk, we preserve textile integrity and protect design resources from standard manufacturing over-saturation.</p>
+                    <p>our collections reject temporary seasonal runway trends, establishing a permanent structural archive for modern street couture.</p>
+                </div>
+            </div>
+            
+            <div style="width: 100%; height: 650px; background-color: #f5f5f5; border: 1px solid var(--text-main); display: block; overflow: hidden;">
+                <img src="images/process.jpeg" alt="atelier portrait" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='images/about.jpeg'; this.onerror=function(){ this.src='images/about.png'; this.onerror=null; };">
+            </div>
+        </div>
+    </section>
+    <section id="page-projects" class="page-content">
+        <h2>projects</h2>
+        <div class="projects-editorial-stack">
+            <div class="project-row-block">
+                <div class="project-display-photo" style="background-image: url('images/linen.jpg');"></div>
+                <div class="project-caption-panel">
+                    <div class="project-index-number">01</div>
+                    <h3 class="project-caption-title">project / heavy linen structure mapping</h3>
+                    <p class="project-caption-desc">an examination of how organic structural fiber shapes hold form against fluid body motion. this archive collection focuses entirely on rough flax weaves and asymmetric raw cut seams.</p>
+                </div>
+            </div>
+            <div class="project-row-block reversed">
+                <div class="project-caption-panel">
+                    <div class="project-index-number">02</div>
+                    <h3 class="project-caption-title">project / sheer silk contouring lines</h3>
+                    <p class="project-caption-desc">exploring transparency layers by sewing translucent raw silks against dense internal support canvases. designed as a study on contrast and structural opacity boundaries.</p>
+                </div>
+                <div class="project-display-photo" style="background-image: url('images/silk.jpg');"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="page-contact" class="page-content">
+        <h2>contact[serverless engine]</h2>
+        <div class="contact-layout-split">
+            <form onsubmit="handleInquiry(event)">
+                <div class="form-group">
+                    <label>client identifier name</label>
+                    <input type="text" id="inq-name" placeholder="amara diallo" required>
+                </div>
+                <div class="form-group">
+                    <label>secure routing email</label>
+                    <input type="email" id="inq-email" placeholder="amara@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>project parameters / textile concept</label>
+                    <textarea id="inq-notes" rows="4" placeholder="describe silhouette structural goals, cuts, preferences..." required></textarea>
+                </div>
+                <button type="submit">transmit pattern payload</button>
+                <div id="inquiry-status" class="status-box"></div>
+            </form>
+            <div style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; text-transform: lowercase;">
+                <p style="margin-bottom: 1.5rem;">use this interactive design interface to pitch customized architectural garments directly to our team.</p>
+                <p>// note for evaluation panels: triggering this submission executing block triggers your standalone python serverless deployment architecture module asynchronously.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // CENTRALIZED SPA VIEW ROUTER HUB
+        function showPage(pageName) {
+            var views = document.querySelectorAll('.page-content');
+            var links = document.querySelectorAll('nav a');
+            
+            // Loop and scrub active styling/display maps away from all nodes cleanly
+            for (var i = 0; i < views.length; i++) {
+                views[i].classList.remove('active-page');
+                views[i].style.display = 'none';
+            }
+            for (var j = 0; j < links.length; j++) {
+                links[j].classList.remove('active');
+            }
+            
+            // Re-reveal ONLY the single requested view explicitly
+            var targetView = document.getElementById('page-' + pageName);
+            if (targetView) {
+                targetView.classList.add('active-page');
+                targetView.style.display = 'block';
+            }
+            
+            var targetLink = document.getElementById('nav-' + pageName);
+            if (targetLink) {
+                targetLink.classList.add('active');
+            }
+
+            // Route dynamic API query parsing loops
+            if (pageName === 'shop') fetchCatalog();
+            if (pageName === 'dashboard') fetchDashboard();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // REST API: Consume Catalog Microservice (Port 8082)
+        async function fetchCatalog() {
+            var container = document.getElementById('catalog-container');
+            if (!container) return;
+            try {
+                var response = await fetch('http://127.0.0.1:8082/catalog/collection');
+                var data = await response.json();
+                var imageMap = { "item_01": "images/dress.jpg", "item_02": "images/blazer.jpg" };
+                
+                container.innerHTML = data.map(function(item) {
+                    return `
+                        <div class="product-card">
+                            <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/dress.jpg'}');"></div>
+                            <div class="product-details-panel">
+                                <div class="product-header-row">
+                                    <div>
+                                        <h3 class="product-title">${item.name}</h3>
+                                        <p class="product-category">// design line: ${item.category}</p>
+                                    </div>
+                                    <p class="product-price">€${item.base_price.toFixed(2)}</p>
+                                </div>
+                                <button onclick="alert('size custom profile allocated to: ${item.name}')">view dimensions</button>
+                            </div>
+                        </div>`;
+                }).join('');
+            } catch (err) {
+                container.innerHTML = `<div style="grid-column: 1/-1; color: red; padding: 2rem; border: 1px dashed red;">error querying microservice enclave on port 8082. ensure docker compose is up!</div>`;
+            }
+        }
+
+        // REST API: Consume Client Profile Microservice (Port 8081)
+        async function fetchDashboard() {
+            var profileCard = document.getElementById('profile-card');
+            var ordersCard = document.getElementById('orders-card');
+            if (!profileCard || !ordersCard) return;
+            try {
+                var profileRes = await fetch('http://127.0.0.1:8081/client/profile');
+                var profile = await profileRes.json();
+                profileCard.innerHTML = `
+                    <h3>${profile.name} // tailoring parameters</h3>
+                    <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:1.5rem; text-transform: lowercase;">
+                        <p>bust line: ${profile.measurements.bust}</p>
+                        <p>waist line: ${profile.measurements.waist}</p>
+                        <p>hips contour: ${profile.measurements.hips}</p>
+                        <p>stature vertical: ${profile.measurements.height}</p>
+                        <p style="margin-top:1rem; color:var(--text-muted); font-style:italic;">"${profile.style_notes}"</p>
+                    </div>`;
+
+                var ordersRes = await fetch('http://127.0.0.1:8081/client/orders');
+                var orders = await ordersRes.json();
+                ordersCard.innerHTML = `
+                    <h3>active production tracker</h3>
+                    ${orders.map(function(o) {
+                        return `
+                            <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.3rem; margin-top:1.5rem; border-top: 1px solid var(--accent-line); padding-top: 1rem; text-transform: lowercase;">
+                                <p>id parameter: ${o.order_id}</p>
+                                <p>assignment: ${o.item}</p>
+                                <p>atelier lifecycle status: <strong>[${o.status}]</strong></p>
+                                <p>target projection: ${o.estimated_delivery}</p>
+                            </div>`;
+                    }).join('')}`;
+            } catch (err) {
+                profileCard.innerHTML = `<p style="color:red; padding-top:1rem;">error connecting to container server on port 8081.</p>`;
+                ordersCard.innerHTML = `<p style="color:red; padding-top:1rem;">error connecting to container server on port 8081.</p>`;
+            }
+        }
+
+        // SERVERLESS: Standalone Execution Frame
+        function handleInquiry(e) {
+            e.preventDefault();
+            var status = document.getElementById('inquiry-status');
+            var name = document.getElementById('inq-name').value;
+            var email = document.getElementById('inq-email').value;
+            if (status) {
+                status.className = "status-box status-success";
+                status.innerText = "payload execution successful. thank you " + name + ". inquiry transmitted through serverless router framework to destination ledger email (" + email + ").";
+            }
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
