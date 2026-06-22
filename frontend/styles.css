@@ -1,377 +1,414 @@
-     /* The Technical Studio Architecture Theme Global Variables */
-        :root {
-            --bg: #ffffff;
-            --text-main: #000000;
-            --text-muted: #767676;
-            --accent-line: #ede8e0;
-            --text-font-style: 'Inter', sans-serif;
-            --logo-font-style: 'Playfair Display', serif;
-        }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: var(--text-font-style); 
-            letter-spacing: -0.02em;
-        }
-        
-        body { 
-            background-color: var(--bg); 
-            color: var(--text-main); 
-            line-height: 1.5; 
-            -webkit-font-smoothing: antialiased;
-        }
-                
-        /* Copenhagen Flat Minimal Navigation Layout with Pink Sketchpad Styling */
+/* --- GLOBAL CORE RESETS --- */
+:root {
+    --text-main: #000000;
+    --text-muted: #555555;
+    --bg-color: #fcf9f9; /* Warm minimalist editorial background tint */
+    --accent-line: #000000;
+}
 
-        header {
-            /* Matches the clean, slightly tinted white background of her sketchbook page */
-            background-color: #fcfbfa; 
-            border-bottom: 1px solid var(--text-main);
-            position: sticky; 
-            top: 0; 
-            z-index: 1000;
-            
-            /* Renders the thin, delicate blue sketchbook horizontal grid lines from her drawing */
-            background-image: linear-gradient(rgba(173, 201, 222, 0.3) 1px, transparent 1px);
-            background-size: 100% 20px;
-        }
-        
-        .nav-container {
-            max-width: 1400px; 
-            margin: 0 auto; 
-            display: flex;
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 1.5rem 2rem;
-            background: transparent;
-        }
-        
-        /* THE Bespoke SIGNATURE LOGO ARCHITECTURE */
-        .logo { 
-            font-family: var(--logo-font-style);
-            font-size: 3.2rem; /* Scaled up to capture her prominent signature style */
-            font-weight: 400; 
-            font-style: italic; 
-            color: var(--text-main); 
-            letter-spacing: -0.02em; /* Tighter letter spacing to match flowing cursive */
-            text-transform: none; 
-            cursor: pointer;
-            line-height: 0.85; /* Tight vertical row overlap matching her handwriting */
-            padding: 0.5rem 0;
-            display: inline-block;
-            text-align: left;
-            
-            /* Emulates sharp, heavy liquid black ink tracking on high-grade fine paper */
-            text-shadow: 0.4px 0.4px 0px rgba(0, 0, 0, 0.15);
-            -webkit-font-smoothing: antialiased;
-            
-            /* Gives the signature her natural handwriting slant angle */
-            transform: rotate(-2deg); 
-            transition: transform 0.3s ease;
-        }
-        
-        .logo:hover {
-            transform: rotate(-0.5deg) scale(1.02);
-        }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-        /* Forces the second word down and nudges it right, perfectly mirroring her notebook spacing */
-        .logo span {
-            display: block;
-            font-size: 3rem;
-            padding-left: 2rem; /* The exact right offset shift from her sketch */
-            margin-top: -0.2rem;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.5;
+        overflow-x: hidden;
+    }
 
-        nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 400;
-            margin-left: 2rem;
-            font-size: 0.85rem;
-            text-transform: lowercase;
-            letter-spacing: 0.02em;
-            transition: color 0.2s ease;
-            cursor: pointer;
-        }
+    /* --- GLOBAL LAYOUT CONTAINER --- */
+    .page-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+        display: none; /* Controlled dynamically by showPage JavaScript router */
+    }
 
-        nav a:hover, nav a.active {
-            color: var(--text-main);
-            text-decoration: underline;
-            text-underline-offset: 4px;
-        }
+    .page-content.active-page {
+        display: block;
+    }
 
-        /* STABLE SINGLE PAGE VIEW MANAGER HIERARCHY */
-        .page-content { 
-            max-width: 1400px; 
-            margin: 2rem auto 6rem; 
-            padding: 0 2rem; 
-            display: none; /* Keeps sections hidden initially */
-            width: 100%;
-        }
-        
-        /* Explicitly activated view container states */
-        .page-content.active-page { 
-            display: block !important; 
-        }
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 300;
+        font-size: 1.8rem;
+        letter-spacing: 0.1rem;
+        text-transform: lowercase;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--accent-line);
+        padding-bottom: 0.5rem;
+    }
 
-        h2 { 
-            width: 100%;
-            font-size: 1.1rem; 
-            color: var(--text-main); 
-            margin-bottom: 2rem; 
-            font-weight: 500;
-            text-transform: lowercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--text-main);
-            padding-bottom: 0.5rem;
-        }
+    /* --- FIXED NAVIGATION HEADER ARCHITECTURE --- */
+    header {
+        width: 100%;
+        background-color: var(--bg-color);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
 
-        /* PAGE 1: HOME (Editorial Lookbook Blocks) */
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-bottom: 1px solid var(--accent-line);
+    }
+
+    .logo {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-weight: 600;
+        font-size: 1.5rem;
+        cursor: pointer;
+        letter-spacing: -0.02rem;
+    }
+
+    .logo span {
+        font-weight: 300;
+        font-family: 'Inter', sans-serif;
+        font-style: normal;
+    }
+
+    nav {
+        display: flex;
+        gap: 2.5rem; /* Unsquishes the navigation links by adding explicit room */
+    }
+
+    nav a {
+        cursor: pointer;
+        text-transform: lowercase;
+        font-size: 0.95rem;
+        font-weight: 400;
+        letter-spacing: 0.05rem;
+        text-decoration: none;
+        color: var(--text-main);
+        transition: opacity 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+        opacity: 0.4;
+    }
+
+    /* --- HOME PAGE LOOKBOOK ELEMENTS --- */
+    .lookbook-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
         .lookbook-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            width: 100%;
+            grid-template-columns: 1fr;
         }
-        .lookbook-photo-frame {
-            min-height: 650px;
-            background-position: center;
-            background-size: cover;
-            display: flex;
-            align-items: flex-end;
-            padding: 1.5rem;
-            border: 1px solid var(--text-main);
-        }
-        .lookbook-label {
-            background: var(--bg);
-            color: var(--text-main);
-            padding: 0.6rem 1.2rem;
-            font-size: 0.8rem;
-            text-transform: lowercase;
-            font-weight: 500;
-            border: 1px solid var(--text-main);
-        }
+    }
 
-        /* PAGE 2: SHOP (Decoupled Grid Layout) */
-        .shop-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-            gap: 3rem; 
-            margin-top: 2rem; 
-            width: 100%;
-        }
-        .product-card { 
-            background: var(--bg); 
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--text-main);
-        }
-        .product-image-window {
-            height: 550px;
-            background-position: center;
-            background-size: cover;
-            border-bottom: 1px solid var(--text-main);
-        }
-        .product-details-panel {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .product-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-        .product-title { 
-            font-size: 1.1rem;
-            color: var(--text-main); 
-            font-weight: 500;
-            text-transform: lowercase;
-        }
-        .product-category {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: lowercase;
-            margin-top: 0.2rem;
-        }
-        .product-price { 
-            color: var(--text-main); 
-            font-weight: 400; 
-            font-size: 1.1rem; 
-        }
+    .lookbook-photo-frame {
+        width: 100%;
+        height: 600px;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        border: 1px solid var(--accent-line);
+    }
 
-        /* PAGE 3: ABOUT - High-End Minimalist Grid Framework */
+    .lookbook-label {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.05rem;
+        text-transform: lowercase;
+    }
+
+    /* --- EDITORIAL ABOUT SECTION --- */
+    .about-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 4rem; /* Balanced spacing between the text and image */
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    @media (max-width: 850px) {
         .about-wrapper {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 5rem;
-            margin-top: 3rem;
-            align-items: start;
-            width: 100%;
+            flex-direction: column; /* Collapses beautifully onto smaller mobile viewports */
+            gap: 2rem;
         }
-        .about-text-column {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
+        .about-image-frame {
+            width: 100% !important;
+            height: 450px !important;
         }
-        .about-manifesto {
-            font-size: 1.5rem;
-            font-weight: 300;
-            line-height: 1.7;
-            color: var(--text-main);
-            text-transform: lowercase;
-        }
-        .about-subtext {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            text-transform: lowercase;
-            display: flex;
+    }
+
+    .about-text-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 650px;
+    }
+
+    .about-manifesto {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 1.35rem;
+        line-height: 1.6;
+        color: var(--text-main);
+    }
+
+    .about-subtext {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        text-transform: lowercase;
+    }
+
+    .about-subtext p {
+        margin-bottom: 1rem;
+    }
+
+    .about-image-frame {
+        width: 380px; /* Constrained elegant column profile */
+        height: 520px;
+        border: 1px solid var(--accent-line);
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .about-image-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* --- SHOP CONTAINER TECHNICAL GRID --- */
+    .shop-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        border-top: 1px solid var(--accent-line, #000);
+        border-left: 1px solid var(--accent-line, #000);
+        margin-top: 2rem;
+    }
+
+    .product-card {
+        background-color: transparent;
+        border-right: 1px solid var(--accent-line);
+        border-bottom: 1px solid var(--accent-line);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .product-image-window {
+        width: 100%;
+        height: 480px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        filter: grayscale(20%);
+        transition: filter 0.4s ease;
+    }
+    @media (max-width: 768px) {
+    .shop-grid {
+        grid-template-columns: 1fr; /* Seamlessly stacks into a single image on mobile viewports */
+    }
+}
+    .product-card:hover .product-image-window {
+        filter: grayscale(0%);
+    }
+
+    .product-details-panel {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        text-transform: lowercase;
+    }
+
+    .product-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .product-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.05rem;
+    }
+
+    .product-category {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: 300;
+    }
+
+    /* --- EDITORIAL STACK PROJECTS PAGE --- */
+    .projects-editorial-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        margin-top: 2rem;
+    }
+
+    .project-row-block {
+        display: flex;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .project-row-block.reversed {
+        flex-direction: row-reverse;
+    }
+
+    @media (max-width: 768px) {
+        .project-row-block, .project-row-block.reversed {
             flex-direction: column;
             gap: 1.5rem;
         }
-        .about-photo-window {
-        
-            width: 100%;
-            height: 650px;
-            /* Swapped back to target your local directory asset safely */
-            background-image: url('images/process.jpeg');
-            background-position: center;
-            background-size: cover;
-            border: 1px solid var(--text-main);
-            display: block; 
-            background-color: #f2ede4; 
-        }
-        
-        @media(max-width: 900px) {
-            .about-wrapper { grid-template-columns: 1fr; gap: 3rem; }
-            .about-photo-window { height: 450px; }
-        }
-        /* PAGE 4: PROJECTS (Multi-Row Runway Logs) */
-        .projects-editorial-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 6rem;
-            margin-top: 2rem;
-            width: 100%;
-        }
-        .project-row-block {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        .project-row-block.reversed {
-            grid-template-columns: 0.8fr 1.2fr;
-        }
         .project-display-photo {
-            height: 600px;
-            background-position: center;
-            background-size: cover;
-            border: 1px solid var(--text-main);
+            width: 100% !important;
+            height: 350px !important;
         }
+    }
+
+    .project-display-photo {
+        width: 50%;
+        height: 450px;
+        background-position: center;
+        background-size: cover;
+        border: 1px solid var(--accent-line);
+    }
+
+    .project-caption-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        text-transform: lowercase;
+    }
+
+    @media (max-width: 768px) {
         .project-caption-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            text-align: left;
+            width: 100%;
         }
-        .project-caption-title {
-            font-size: 1.3rem;
-            font-weight: 500;
-            text-transform: lowercase;
-        }
-        .project-caption-desc {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            text-transform: lowercase;
-        }
-        .project-index-number {
-            font-size: 3rem;
-            font-weight: 200;
-            color: #ede8e0;
-            border-bottom: 1px solid #ede8e0;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
+    }
 
-        /* PAGES 5 & 6: BACKEND LEDGER FORMS */
+    .project-index-number {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .project-caption-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+    }
+
+    .project-caption-desc {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    /* --- CONTACT FORM STRUCTURAL LAYOUT --- */
+    .contact-layout-split {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 4rem;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
         .contact-layout-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-            margin-top: 2rem;
-            width: 100%;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
-        form { 
-            background: var(--bg); 
-            width: 100%; 
-            display: flex;
-            flex-direction: column;
-        }
-        .form-group { 
-            margin-bottom: 1.8rem; 
-            text-align: left; 
-        }
-        .form-group label { 
-            display: block; 
-            margin-bottom: 0.5rem; 
-            font-weight: 400; 
-            font-size: 0.8rem; 
-            text-transform: lowercase;
-            color: var(--text-muted);
-        }
-        .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; 
-            padding: 0.7rem 0; 
-            border: none;
-            border-bottom: 1px solid var(--text-main);
-            font-size: 0.95rem; 
-            color: var(--text-main);
-            background-color: transparent;
-            border-radius: 0;
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-bottom-color: var(--text-muted);
-        }
+    }
 
-        /* Global Structural UI Buttons */
-        button { 
-            background: var(--text-main); 
-            color: var(--bg); 
-            border: 1px solid var(--text-main);
-            padding: 0.9rem 2rem; 
-            font-size: 0.85rem; 
-            text-transform: lowercase;
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            border-radius: 0;
-            width: 100%;
-        }
-        button:hover { 
-            background: var(--bg);
-            color: var(--text-main);
-        }
-        .status-box { 
-            margin-top: 1.5rem; 
-            padding: 1rem; 
-            font-size: 0.85rem; 
-            border: 1px dashed var(--text-main);
-            display: none;
-            text-transform: lowercase;
-        }
-        .status-success { display: block; color: var(--text-main); background: #fbfbfb; }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-        @media(max-width: 768px) {
-            .lookbook-container, .shop-grid, .about-wrapper, .project-row-block, .project-row-block.reversed, .contact-layout-split { grid-template-columns: 1fr; gap: 2rem; }
-            .project-display-photo { height: 400px; }
-            .nav-container { flex-direction: column; gap: 1rem; align-items: flex-start; }
-            nav a { margin-left: 0; margin-right: 1.5rem; }
-        }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-transform: lowercase;
+    }
+
+    .form-group label {
+        font-size: 0.85rem;
+        letter-spacing: 0.05rem;
+    }
+
+    input[type="text"], input[type="email"], textarea {
+        width: 100%;
+        background-color: transparent;
+        border: 1px solid var(--accent-line);
+        padding: 1rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        color: var(--text-main);
+        outline: none;
+        transition: opacity 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+        opacity: 0.7;
+    }
+
+    /* --- DYNAMIC INTERACTION BUTTON BUTTONS --- */
+    button, input[type="submit"] {
+        background-color: transparent;
+        color: var(--text-main);
+        border: 1px solid var(--accent-line);
+        padding: 1rem 2rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        text-transform: lowercase;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: var(--text-main);
+        color: #ffffff;
+    }
+
+    .status-box {
+        display: none;
+        padding: 1rem;
+        margin-top: 1rem;
+        border: 1px solid var(--accent-line);
+        font-size: 0.9rem;
+        text-transform: lowercase;
+        line-height: 1.5;
+    }
+
+    .status-success {
+        background-color: rgba(0, 0, 0, 0.03);
+    }

@@ -26,8 +26,8 @@ def read_root():
 @app.get("/catalog/collection")
 def get_collection():
     return [
-        {"id": "item_01", "name": "Bonnet", "base_price": 120, "category": "Bonnets"},
-        {"id": "item_02", "name": "Top", "base_price": 295.00, "category": "Outerwear"}
+        {"id": "item_01", "name": "Dress", "base_price": 245, "category": "Spring"},
+        {"id": "item_02", "name": "Top", "base_price": 180.00, "category": "Summer"}
     ]
 
 @app.post("/catalog/customize")
