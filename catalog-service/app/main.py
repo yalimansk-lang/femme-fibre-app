@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-app = FastAPI(title="Femme.Fibre Catalog Service")
+app = FastAPI()
 
 # This is the vital security clearance line that tells your browser
 # it is allowed to display the catalog cards on your HTML page!
