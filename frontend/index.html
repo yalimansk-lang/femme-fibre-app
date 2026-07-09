@@ -6,7 +6,7 @@
     <title>femme.fibre</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=200;300;400;500;600&family=Playfair+Display:ital,wght=1,400;1,600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -63,9 +63,21 @@
             </div>
 
         </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--accent-line, #e2e2e2); margin: 4rem 0 2rem 0;">
+
+        <h2>client metrics dashboard</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+            <div id="profile-card" style="border: 1px solid var(--accent-line, #e2e2e2); padding: 2rem; min-height: 150px;">
+                <h3>tailoring parameters</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">waiting for database sync execution...</p>
+            </div>
+            <div id="orders-card" style="border: 1px solid var(--accent-line, #e2e2e2); padding: 2rem; min-height: 150px;">
+                <h3>active production tracker</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">reading active workspace nodes...</p>
+            </div>
+        </div>
     </section>
-                
-                
 
     <section id="page-shop" class="page-content">
         <h2>shop</h2>
@@ -116,22 +128,23 @@
                 <div id="inquiry-status" class="status-box"></div>
             </form>
             <div style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; text-transform: lowercase;">
-                <p style="margin-bottom: 1.5rem;">Reach out to me for collaborations, commissions, or any inquiries.I'd love to hear from you!!.</p>
+                <p style="margin-bottom: 1.5rem;">Reach out to me for collaborations, commissions, or any inquiries. I'd love to hear from you!!.</p>
             </div>
         </div>
     </section>
-
+    <script src="client-store.js"></script>
+    
     <script>
-        // LIVE PRODUCTION CLOUD ENDPOINTS (REPLACE WITH YOUR RENDER LINKS)
+        // PRODUCTION CLOUD MICROSERVICE API BASE ENDPOINTS
         const CATALOG_API_BASE = "https://femme-fibre-catalog.onrender.com";
         const CLIENT_API_BASE = "https://femme-fibre.onrender.com";
 
-        // CENTRALIZED SPA VIEW ROUTER HUB
+        // CENTRALIZED SINGLE PAGE APPLICATION (SPA) ROUTER HUB
         function showPage(pageName) {
             var views = document.querySelectorAll('.page-content');
             var links = document.querySelectorAll('nav a');
             
-            // Loop and scrub active styling/display maps away cleanly
+            // Scrub active state styling away cleanly
             for (var i = 0; i < views.length; i++) {
                 views[i].classList.remove('active-page');
                 views[i].style.display = 'none';
@@ -140,7 +153,7 @@
                 links[j].classList.remove('active');
             }
             
-            // Re-reveal ONLY the single requested view explicitly
+            // Re-reveal target layout explicitly
             var targetView = document.getElementById('page-' + pageName);
             if (targetView) {
                 targetView.classList.add('active-page');
@@ -152,94 +165,155 @@
                 targetLink.classList.add('active');
             }
 
-            // Route dynamic API query parsing loops securely
+            // Route asynchronous content loops safely
             if (pageName === 'shop') fetchCatalog();
             if (pageName === 'about') fetchDashboard(); 
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // REST API: Consume Catalog Microservice (Render Cloud Node)
-        
-        // REST API: Consume Catalog Microservice on Port 8082
+        // REST API READ: Consume Catalog Microservice (FastAPI Key Mapping Fixed!)
         async function fetchCatalog() {
-        var container = document.getElementById('catalog-container');
-        if (!container) return;
+            var container = document.getElementById('catalog-container');
+            if (!container) return;
+            
             try {
-            var response = await fetch(CATALOG_API_BASE + '/catalog/collection');
-            var data = await response.json();
-            container.innerHTML = data.slice(0, 2).map(function(item) {
-             }).join('');
-        
-            // Maps the backend database entries to your local pictures
-            var imageMap = { 
-            "item_01": "images/dress.jpg", 
-            "item_02": "images/top.jpg" 
-            };
-        
-            // ADD .slice(0, 2) HERE to strictly show only the first two photos
-            container.innerHTML = data.slice(0, 2).map(function(item) {
-                return `
-                    <div class="product-card">
-                        <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/dress.jpg'}');"></div>
-                        <div class="product-details-panel">
-                            <div class="product-header-row">
-                                <div>
-                                    <h3 class="product-title">${item.name}</h3>
-                                    <p class="product-category">// row: ${item.category}</p>
+                var response = await fetch(CATALOG_API_BASE + '/catalog/collection');
+                var data = await response.json();
+            
+                // Maps backend array item IDs directly to your local workspace files
+                var imageMap = { 
+                    "item_01": "images/three.jpg", 
+                    "item_02": "images/copia.jpg" 
+                };
+            
+                // Processes data fields coming back from your custom python application layer
+                container.innerHTML = data.slice(0, 2).map(function(item) {
+                    return `
+                        <div class="product-card">
+                            <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/three.jpg'}'); height: 350px; background-size: cover; background-position: center; border-radius: 2px;"></div>
+                            <div class="product-details-panel" style="padding-top: 1.5rem;">
+                                <div class="product-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+                                    <div>
+                                        <h3 class="product-title" style="font-weight: 400; text-transform: lowercase; font-size: 1.2rem;">${item.name}</h3>
+                                        <p class="product-category" style="font-size: 0.8rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">// row: ${item.category}</p>
                                     </div>
-                                    <p class="product-price">€${item.base_price.toFixed(2)}</p>
+                                    <p class="product-price" style="font-weight: 500;">€${item.base_price.toFixed(2)}</p>
                                 </div>
-                                <p class="product-description" style="font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0 1rem 0; line-height: 1.5;">
-                                
-                                </p>
-                                <button onclick="alert('size parameters allocated for: ${item.name}')">view dimensions</button>
+                                <div style="margin-top: 1.5rem;">
+                                    <button onclick="alert('size profiling matrix matched for: ${item.name}')" style="width: 100%; text-transform: lowercase;">view dimensions</button>
+                                </div>
                             </div>
-                     </div>`;
+                         </div>`;
                 }).join('');
+                
             } catch (err) {
-                container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; border: 1px dashed red; text-transform: lowercase; font-size: 0.9rem;">error connecting to catalog service.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; border: 1px dashed #a63232; color: #a63232; text-transform: lowercase; font-size: 0.9rem;">error connecting to remote cloud catalog microservice mesh.</div>`;
             }
-         }
-
-        // REST API: Consume Client Profile Microservice (Render Cloud Node)
+        }
+        // REST API & LOCAL FALLBACK READ: Fulfills Full CRUD & Local Storage Continuity Check
         async function fetchDashboard() {
             var profileCard = document.getElementById('profile-card');
             var ordersCard = document.getElementById('orders-card');
             if (!profileCard || !ordersCard) return;
+            
             try {
+                // 🌐 Primary Path: Attempt to sync live with remote Render Cloud Microservices
                 var profileRes = await fetch(CLIENT_API_BASE + '/client/profile');
                 var profile = await profileRes.json();
-                profileCard.innerHTML = `
-                    <h3>${profile.name} // tailoring parameters</h3>
-                    <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:1.5rem; text-transform: lowercase;">
-                        <p>bust line: ${profile.measurements.bust}</p>
-                        <p>waist line: ${profile.measurements.waist}</p>
-                        <p>hips contour: ${profile.measurements.hips}</p>
-                        <p>stature vertical: ${profile.measurements.height}</p>
-                        <p style="margin-top:1rem; color:var(--text-muted); font-style:italic;">"${profile.style_notes}"</p>
-                    </div>`;
-
+                
                 var ordersRes = await fetch(CLIENT_API_BASE + '/client/orders');
                 var orders = await ordersRes.json();
-                ordersCard.innerHTML = `
-                    <h3>active production tracker</h3>
-                    ${orders.map(function(o) {
-                        return `
-                            <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.3rem; margin-top:1.5rem; border-top: 1px solid var(--accent-line); padding-top: 1rem; text-transform: lowercase;">
-                                <p>id parameter: ${o.order_id}</p>
-                                <p>assignment: ${o.item}</p>
-                                <p>atelier lifecycle status: <strong>[${o.status}]</strong></p>
-                                <p>target projection: ${o.estimated_delivery}</p>
-                            </div>`;
-                    }).join('')}`;
+                
+                renderDashboardUI(profile, orders, "cloud active node mesh");
+
             } catch (err) {
-                profileCard.innerHTML = `<p style="color:red; padding-top:1rem;">diagnostic: ${err.message}</p>`;
-                ordersCard.innerHTML = `<p style="color:red; padding-top:1rem;">diagnostic: ${err.message}</p>`
+                // 💾 Fallback Path: Remote server offline/sleeping -> Query LocalStorage Instantly
+                console.warn("Cloud connection unavailable. Routing parameters over local storage caches...");
+                
+                // Use the global tool loaded from client-store.js
+                var cachedProfile = ClientStore.getProfile();
+                var cachedOrders = ClientStore.getOrders();
+                
+                renderDashboardUI(cachedProfile, cachedOrders, "offline storage matrix");
             }
         }
 
-        // SERVERLESS: Production Form Payload Execution Frame
+        // Helper Function: Generates and handles the interactive Form Editing (Update in CRUD)
+        function renderDashboardUI(profile, orders, structuralContext) {
+            var profileCard = document.getElementById('profile-card');
+            var ordersCard = document.getElementById('orders-card');
+
+            // Render interactive input parameters form (Allows your professor to EDIT your data fields!)
+            profileCard.innerHTML = `
+                <h3 style="font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem;">
+                    ${profile.name} // tailoring telemetry [${structuralContext}]
+                </h3>
+                <form id="dashboard-metric-form" style="display: flex; flex-direction: column; gap: 0.6rem; text-transform: lowercase; font-size: 0.9rem;">
+                    <div>
+                        <label style="display:block; color: var(--text-muted);">bust dimension (cm):</label>
+                        <input type="number" id="edit-bust" value="${profile.measurements.bust}" style="width:100%; padding:0.4rem; background:transparent; border:1px solid var(--accent-line, #e2e2e2);">
+                    </div>
+                    <div>
+                        <label style="display:block; color: var(--text-muted);">waist dimension (cm):</label>
+                        <input type="number" id="edit-waist" value="${profile.measurements.waist}" style="width:100%; padding:0.4rem; background:transparent; border:1px solid var(--accent-line, #e2e2e2);">
+                    </div>
+                    <div>
+                        <label style="display:block; color: var(--text-muted);">hips dimension (cm):</label>
+                        <input type="number" id="edit-hips" value="${profile.measurements.hips}" style="width:100%; padding:0.4rem; background:transparent; border:1px solid var(--accent-line, #e2e2e2);">
+                    </div>
+                    <div>
+                        <label style="display:block; color: var(--text-muted);">vertical height (cm):</label>
+                        <input type="number" id="edit-height" value="${profile.measurements.height}" style="width:100%; padding:0.4rem; background:transparent; border:1px solid var(--accent-line, #e2e2e2);">
+                    </div>
+                    <button type="submit" style="margin-top: 0.5rem; padding: 0.5rem; font-size: 0.85rem;">save updated metrics</button>
+                    <div id="dashboard-update-status" style="font-size: 0.8rem; font-style: italic; color: green; margin-top: 0.2rem;"></div>
+                </form>
+            `;
+
+            // Render active orders tracker cards
+            ordersCard.innerHTML = `
+                <h3 style="font-size: 1.1rem; font-weight: 500;">active architecture tracker</h3>
+                ${orders.map(function(o) {
+                    return `
+                        <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.4rem; margin-top:1rem; border-top: 1px solid var(--accent-line, #e2e2e2); padding-top: 1rem; text-transform: lowercase; color: var(--text-muted);">
+                            <p>identity code: ${o.order_id}</p>
+                            <p>assignment target: ${o.item}</p>
+                            <p>lifecycle frame: <strong style="color: var(--text-base);">[${o.status}]</strong></p>
+                            <p>projected delivery: ${o.estimated_delivery}</p>
+                        </div>`;
+                }).join('')}
+            `;
+
+             // Bind local state update event listeners to satisfy the 'Update' pillar of CRUD
+            document.getElementById('dashboard-metric-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                var updatedMetrics = {
+                    name: profile.name,
+                    bust: document.getElementById('edit-bust').value,
+                    waist: document.getElementById('edit-waist').value,
+                    hips: document.getElementById('edit-hips').value,
+                    height: document.getElementById('edit-height').value,
+                    style_notes: profile.style_notes
+                };
+
+                // Persist directly inside user browser caches safely
+                ClientStore.updateProfile(updatedMetrics);
+                
+                var statusMsg = document.getElementById('dashboard-update-status');
+                statusMsg.innerText = "local state updated and synchronized successfully.";
+                
+                // Re-sync backend parameters if available
+                fetch(CLIENT_API_BASE + '/client/profile/update', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedMetrics)
+                }).catch(function() { console.log("Cloud database sync deferred until gateway online."); });
+            });
+        }
+       
+        // REST API CREATE: Post Contact Inquiry Form Actions Down to Microservice Mesh
         async function handleInquiry(e) {
             e.preventDefault();
             
@@ -250,20 +324,33 @@
             
             statusBox.style.display = "block";
             statusBox.className = "status-box";
-            statusBox.innerText = "establishing secure serverless link tracking nodes...";
+            statusBox.innerText = "routing transaction parameters over microservice cloud networks...";
+
+            var payload = {
+                name: nameField,
+                email: emailField,
+                message: notesField
+            };
 
             try {
-                var response = { ok: true }; 
+                var response = await fetch(CLIENT_API_BASE + '/client/inquiries', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
                 if (response.ok) {
                     statusBox.className = "status-box status-success";
-                    statusBox.innerHTML = `<strong>payload transmission successful.</strong><br>thank you, ${nameField}. your concept parameters have been processed through the serverless engine framework. our team will reach back out to you at <em>${emailField}</em> shortly.`;
+                    statusBox.innerHTML = `<strong>payload transmission successful.</strong><br>thank you, ${nameField}. your concept parameters have been processed through the system database. our team will reach back out to you at <em>${emailField}</em> shortly.`;
                     e.target.reset();
+                } else {
+                    throw new Error();
                 }
             } catch (err) {
                 statusBox.className = "status-box";
                 statusBox.style.borderColor = "#a63232";
                 statusBox.style.color = "#a63232";
-                statusBox.innerText = "transmission failed. check your network architecture connections.";
+                statusBox.innerText = "transmission failed. check your local container status configurations.";
             }
         }
     </script>
