@@ -28,7 +28,7 @@
     </header>
 
     <section id="page-home" class="page-content active-page">
-        <h2>lookbook - v2.0</h2>
+        <h2>lookbook</h2>
         <div class="lookbook-container">
             <div class="lookbook-photo-frame" style="background-image: url('images/three.jpg');">
                 <span class="lookbook-label">spring collection</span>
@@ -66,7 +66,7 @@
 
         <hr style="border: 0; border-top: 1px solid var(--accent-line, #e2e2e2); margin: 4rem 0 2rem 0;">
 
-        <h2>client metrics dashboard</h2>
+        <h2>form & fit</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
             <div id="profile-card" style="border: 1px solid var(--accent-line, #e2e2e2); padding: 2rem; min-height: 150px;">
                 <h3>tailoring parameters</h3>
@@ -183,15 +183,15 @@
             
                 // Maps backend array item IDs directly to your local workspace files
                 var imageMap = { 
-                    "item_01": "images/three.jpg", 
-                    "item_02": "images/copia.jpg" 
+                    "item_01": "images/dress.jpg", 
+                    "item_02": "images/top.jpg" 
                 };
             
                 // Processes data fields coming back from your custom python application layer
                 container.innerHTML = data.slice(0, 2).map(function(item) {
                     return `
                         <div class="product-card">
-                            <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/three.jpg'}'); height: 350px; background-size: cover; background-position: center; border-radius: 2px;"></div>
+                            <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/top.jpg'}'); height: 350px; background-size: cover; background-position: center; border-radius: 2px;"></div>
                             <div class="product-details-panel" style="padding-top: 1.5rem;">
                                 <div class="product-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
                                     <div>
@@ -201,7 +201,7 @@
                                     <p class="product-price" style="font-weight: 500;">€${item.base_price.toFixed(2)}</p>
                                 </div>
                                 <div style="margin-top: 1.5rem;">
-                                    <button onclick="alert('size profiling matrix matched for: ${item.name}')" style="width: 100%; text-transform: lowercase;">view dimensions</button>
+                                    <button onclick="alert('successfully added to cart: ${item.name.replace(/'/g, "\\'")}')" style="width: 100%; text-transform: lowercase; cursor: pointer;">add to cart</button>
                                 </div>
                             </div>
                          </div>`;
