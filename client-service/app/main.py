@@ -16,7 +16,7 @@ app.add_middleware(
 
 MOCK_CLIENT_PROFILE = {
     "id": "client_101",
-    "name": "Amara Diallo",
+    "name": "Yali Manskleid",
     "measurements": {
         "bust": "36 inches",
         "waist": "28 inches",
@@ -29,7 +29,7 @@ MOCK_CLIENT_PROFILE = {
 MOCK_ORDERS = [
     {
         "order_id": "ff_901", 
-        "item": "Signature Fibre Jumpsuit", 
+        "item": "Spring Dress", 
         "status": "Pattern Cutting", 
         "estimated_delivery": "2026-08-12"
     }
