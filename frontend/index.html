@@ -20,9 +20,14 @@
             <nav>
                 <a onclick="showPage('home')" id="nav-home" class="active">home</a>
                 <a onclick="showPage('shop')" id="nav-shop">shop</a>
-                <a onclick="showPage('about')" id="nav-about">about</a>
                 <a onclick="showPage('projects')" id="nav-projects">projects</a>
+                
+                <a onclick="showPage('about')" id="nav-about" style="display: none;">bespoke profile</a>
+                <a onclick="showPage('staff-portal')" id="nav-staff" style="display: none; color: #a63232;">staff portal</a>
                 <a onclick="showPage('contact')" id="nav-contact">contact</a>
+                
+                <a onclick="showPage('login')" id="nav-login" style="color: var(--text-muted); margin-left: 2rem;">log in</a>
+                <a onclick="handleLogout()" id="nav-logout" style="display: none; color: var(--text-muted); margin-left: 2rem;">log out</a>
             </nav>
         </div>
     </header>
@@ -41,6 +46,31 @@
             <button onclick="showPage('shop')" style="padding: 1.2rem 4.5rem; width: auto;">
                 shop now
             </button>
+        </div>
+    </section>
+
+    <section id="page-login" class="page-content">
+        <h2>client portal</h2>
+        <div style="max-width: 400px; margin: 2rem auto; border: 1px solid var(--accent-line, #e2e2e2); padding: 2rem;">
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; text-transform: lowercase;">enter your atelier credentials to access your bespoke tailoring metrics and active production tracker.</p>
+            <form onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="email" id="login-email" placeholder="email address" required style="padding: 0.8rem; border: 1px solid var(--accent-line, #e2e2e2); background: transparent; color: var(--text-base);">
+                <input type="password" id="login-pass" placeholder="password" required style="padding: 0.8rem; border: 1px solid var(--accent-line, #e2e2e2); background: transparent; color: var(--text-base);">
+                <button type="submit" style="padding: 1rem;">authenticate</button>
+            </form>
+        </div>
+    </section>
+    <section id="page-staff-portal" class="page-content">
+        <h2>atelier staff portal</h2>
+        <div style="border: 1px solid var(--accent-line, #e2e2e2); padding: 2rem; margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>active client inquiries</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">// admin access level</p>
+            </div>
+            
+            <div id="admin-data-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                <p style="color: var(--text-muted);">fetching secure database records...</p>
+            </div>
         </div>
     </section>
 
@@ -81,6 +111,16 @@
 
     <section id="page-shop" class="page-content">
         <h2>shop</h2>
+        <div class="shop-controls" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <input type="text" id="search-input" placeholder="search collection..." style="padding: 0.8rem; flex-grow: 1; border: 1px solid var(--accent-line, #e2e2e2); background: transparent; color: var(--text-base);">
+            <select id="category-filter" style="padding: 0.8rem; border: 1px solid var(--accent-line, #e2e2e2); background: transparent; color: var(--text-base);">
+                <option value="all">all categories</option>
+                <option value="outerwear">outerwear</option>
+                <option value="tops">tops</option>
+                <option value="bottoms">bottoms</option>
+            </select>
+            <button onclick="applyFilters()" style="padding: 0.8rem 2rem;">filter</button>
+        </div>
         <div id="catalog-container" class="shop-grid">
             <p style="grid-column: 1/-1; color: var(--text-muted);">querying container architecture endpoints...</p>
         </div>
@@ -172,6 +212,76 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // --- USER SESSION MANAGEMENT & ADMIN ROLE --- //
+        
+        // 1. Check if user is already logged in when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            checkAuthStatus();
+        });
+
+        // 2. Process the Login Form
+        function handleLogin(e) {
+            e.preventDefault(); // Prevent page reload
+            var email = document.getElementById('login-email').value;
+            
+            // Security Requirement: Sanitize input (prevents XSS)
+            if(typeof sanitizeInput === 'function') email = sanitizeInput(email);
+
+            // Save the session to the browser's memory
+            localStorage.setItem('femme_active_user', email);
+            
+            // THE SECRET DOOR LOGIC: Check if it is the Admin
+            if (email === 'admin@femmefibre.com') {
+                alert("admin override recognized. accessing secure staff portal.");
+                checkAuthStatus();
+                showPage('staff-portal'); // Send them to the secret page
+            } else {
+                alert(`welcome back, ${email}. your secure session is active.`);
+                checkAuthStatus();
+                showPage('about'); // Send normal users to the normal profile
+            }
+        }
+
+        // 3. Process the Logout
+        function handleLogout() {
+            // Delete the session from browser memory
+            localStorage.removeItem('femme_active_user');
+            alert("you have been securely logged out.");
+            checkAuthStatus();
+            
+            // Kick them back to the home page
+            showPage('home');
+        }
+
+        // 4. The Role-Based Interface Logic (Hides/Shows the links)
+        function checkAuthStatus() {
+            var activeUser = localStorage.getItem('femme_active_user');
+            
+            if (activeUser === 'admin@femmefibre.com') {
+                // ROLE: ADMIN IS LOGGED IN
+                document.getElementById('nav-about').style.display = 'none'; // Hide regular profile
+                document.getElementById('nav-staff').style.display = 'inline-block'; // Reveal Secret Portal
+                document.getElementById('nav-logout').style.display = 'inline-block';
+                document.getElementById('nav-login').style.display = 'none';
+            } else if (activeUser) {
+                // ROLE: REGULAR MEMBER IS LOGGED IN
+                document.getElementById('nav-about').style.display = 'inline-block';
+                document.getElementById('nav-staff').style.display = 'none'; // Keep Secret Portal hidden
+                document.getElementById('nav-logout').style.display = 'inline-block';
+                document.getElementById('nav-login').style.display = 'none';
+            } else {
+                // ROLE: VISITOR (NOT LOGGED IN)
+                document.getElementById('nav-about').style.display = 'none';
+                document.getElementById('nav-staff').style.display = 'none';
+                document.getElementById('nav-logout').style.display = 'none';
+                document.getElementById('nav-login').style.display = 'inline-block';
+            }
+        }
+
+        
+           // Create a global variable to store the catalog data (needed for filtering)
+        let globalCatalog = [];
+
         // REST API READ: Consume Catalog Microservice (FastAPI Key Mapping Fixed!)
         async function fetchCatalog() {
             var container = document.getElementById('catalog-container');
@@ -179,38 +289,85 @@
             
             try {
                 var response = await fetch(CATALOG_API_BASE + '/catalog/collection');
-                var data = await response.json();
-            
-                // Maps backend array item IDs directly to your local workspace files
-                var imageMap = { 
-                    "item_01": "images/dress.jpg", 
-                    "item_02": "images/top.jpg" 
-                };
-            
-                // Processes data fields coming back from your custom python application layer
-                container.innerHTML = data.slice(0, 2).map(function(item) {
-                    return `
-                        <div class="product-card">
-                            <div class="product-image-window" style="background-image: url('${imageMap[item.id] || 'images/top.jpg'}'); height: 350px; background-size: cover; background-position: center; border-radius: 2px;"></div>
-                            <div class="product-details-panel" style="padding-top: 1.5rem;">
-                                <div class="product-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
-                                    <div>
-                                        <h3 class="product-title" style="font-weight: 400; text-transform: lowercase; font-size: 1.2rem;">${item.name}</h3>
-                                        <p class="product-category" style="font-size: 0.8rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">// row: ${item.category}</p>
-                                    </div>
-                                    <p class="product-price" style="font-weight: 500;">€${item.base_price.toFixed(2)}</p>
-                                </div>
-                                <div style="margin-top: 1.5rem;">
-                                    <button onclick="alert('successfully added to cart: ${item.name.replace(/'/g, "\\'")}')" style="width: 100%; text-transform: lowercase; cursor: pointer;">add to cart</button>
-                                </div>
-                            </div>
-                         </div>`;
-                }).join('');
-                
+                globalCatalog = await response.json(); // Save data globally
+                renderCatalog(globalCatalog); // Pass data to our new render function
             } catch (err) {
-                container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; border: 1px dashed #a63232; color: #a63232; text-transform: lowercase; font-size: 0.9rem;">error connecting to remote cloud catalog microservice mesh.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; color: #a63232;">error connecting to remote cloud catalog.</div>`;
             }
         }
+
+        // New helper function to dynamically draw the products on the screen
+        function renderCatalog(dataArray) {
+            var container = document.getElementById('catalog-container');
+            
+            // WE KEPT YOUR CORRECT IMAGE NAMES HERE!
+            var imageMap = { 
+                "item_01": "images/dress.jpg", 
+                "item_02": "images/top.jpg" 
+            };
+            
+            if (dataArray.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted);">no bespoke items found matching your criteria.</p>`;
+                return;
+            }
+
+            container.innerHTML = dataArray.map(function(item) {
+                return `
+                    <div class="product-card">
+                        <div class="product-image-window" role="img" aria-label="${item.name}" style="background-image: url('${imageMap[item.id] || 'images/three.jpg'}'); height: 350px; background-size: cover; background-position: center; border-radius: 2px;"></div>
+                        <div class="product-details-panel" style="padding-top: 1.5rem;">
+                            <div class="product-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+                                <div>
+                                    <h3 class="product-title" style="font-weight: 400; font-size: 1.2rem;">${item.name}</h3>
+                                    <p class="product-category" style="font-size: 0.8rem; color: var(--text-muted);">// row: ${item.category}</p>
+                                </div>
+                                <p class="product-price" style="font-weight: 500;">€${(item.base_price || 0).toFixed(2)}</p>
+                            </div>
+                            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                                <button onclick="alert('successfully added to cart: ${item.name.replace(/'/g, "\\'")}')" style="flex: 2; text-transform: lowercase; cursor: pointer;">add to cart</button>
+                                <button onclick="toggleFavorite('${item.id}')" style="flex: 1; background: transparent; border: 1px solid var(--accent-line, #e2e2e2); color: var(--text-base); cursor: pointer;" title="Save to Favorites">♡</button>
+                            </div>
+                        </div>
+                     </div>`;
+            }).join('');
+        }
+
+        // New function to apply search/filter logic
+        function applyFilters() {
+            let searchTerm = document.getElementById('search-input').value.toLowerCase();
+            let category = document.getElementById('category-filter').value;
+            
+            // Security: Sanitize search input to prevent XSS (requires sanitizeInput function)
+            if(typeof sanitizeInput === 'function') {
+                searchTerm = sanitizeInput(searchTerm);
+            }
+
+            let filteredData = globalCatalog.filter(function(item) {
+                let matchesSearch = item.name.toLowerCase().includes(searchTerm);
+                let matchesCategory = (category === 'all') || (item.category === category);
+                return matchesSearch && matchesCategory;
+            });
+
+            renderCatalog(filteredData);
+        }
+
+        // New function to handle LocalStorage CRUD for Favorites
+        function toggleFavorite(itemId) {
+            // Read from LocalStorage
+            let favs = JSON.parse(localStorage.getItem('femme_favorites') || '[]');
+            
+            if (!favs.includes(itemId)) {
+                favs.push(itemId); // Create
+                alert("item saved to your bespoke archive (favorites).");
+            } else {
+                favs = favs.filter(id => id !== itemId); // Delete
+                alert("item removed from your archive.");
+            }
+            
+            // Update LocalStorage
+            localStorage.setItem('femme_favorites', JSON.stringify(favs));
+        }
+
         // REST API & LOCAL FALLBACK READ: Fulfills Full CRUD & Local Storage Continuity Check
         async function fetchDashboard() {
             var profileCard = document.getElementById('profile-card');
@@ -318,9 +475,9 @@
             e.preventDefault();
             
             var statusBox = document.getElementById('inquiry-status');
-            var nameField = document.getElementById('inq-name').value;
-            var emailField = document.getElementById('inq-email').value;
-            var notesField = document.getElementById('inq-notes').value;
+            var nameField = sanitizeInput(document.getElementById('inq-name').value);
+            var emailField = sanitizeInput(document.getElementById('inq-email').value);
+            var notesField = sanitizeInput(document.getElementById('inq-notes').value);
             
             statusBox.style.display = "block";
             statusBox.className = "status-box";
@@ -353,6 +510,14 @@
                 statusBox.innerText = "transmission failed. check your local container status configurations.";
             }
         }
+
+        // SECURITY REQUIREMENT: Prevent XSS attacks by sanitizing user input
+        function sanitizeInput(str) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
     </script>
 </body>
 </html>
