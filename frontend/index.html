@@ -283,18 +283,25 @@
         let globalCatalog = [];
 
         // REST API READ: Consume Catalog Microservice (FastAPI Key Mapping Fixed!)
-        async function fetchCatalog() {
-            var container = document.getElementById('catalog-container');
-            if (!container) return;
-            
-            try {
-                var response = await fetch('https://femme-fibre-catalog.onrender.com/catalog/collection');
-                globalCatalog = await response.json(); // Save data globally
-                renderCatalog(globalCatalog); // Pass data to our new render function
-            } catch (err) {
-                container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; color: #a63232;">error connecting to remote cloud catalog.</div>`;
-            }
+          async function fetchCatalog() {
+    var container = document.getElementById('catalog-container');
+    if (!container) return;
+    
+    try {
+        // We are hard-coding the full URL here to bypass any environment variable issues
+        var response = await fetch('https://femme-fibre-catalog.onrender.com/catalog/collection');
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        
+        globalCatalog = await response.json();
+        renderCatalog(globalCatalog);
+    } catch (err) {
+        console.error("Fetch error:", err);
+        container.innerHTML = `<div style="grid-column: 1/-1; padding: 3rem; color: #a63232;">Error connecting to remote cloud catalog: ${err.message}</div>`;
+    }
+}
 
         // New helper function to dynamically draw the products on the screen
         function renderCatalog(dataArray) {
