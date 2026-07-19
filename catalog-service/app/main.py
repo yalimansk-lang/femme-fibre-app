@@ -8,7 +8,7 @@ app = FastAPI()
 # it is allowed to display the catalog cards on your HTML page!
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://femme-fibre.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

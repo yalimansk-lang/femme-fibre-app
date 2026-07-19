@@ -288,7 +288,7 @@
             if (!container) return;
             
             try {
-                var response = await fetch(CATALOG_API_BASE + '/catalog/collection');
+                var response = await fetch('https://femme-fibre-catalog.onrender.com/catalog/collection');
                 globalCatalog = await response.json(); // Save data globally
                 renderCatalog(globalCatalog); // Pass data to our new render function
             } catch (err) {
