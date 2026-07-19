@@ -8,8 +8,8 @@ app = FastAPI()
 # it is allowed to display the catalog cards on your HTML page!
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://femme-fibre.vercel.app"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -41,3 +41,7 @@ def request_customization(request: CustomizationRequest):
             "tailor_notes": request.notes
         }
     }
+
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str):
+    return {"status": "ok"}

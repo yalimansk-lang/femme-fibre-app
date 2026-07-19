@@ -176,7 +176,7 @@
     
     <script>
         // PRODUCTION CLOUD MICROSERVICE API BASE ENDPOINTS
-        const CATALOG_API_BASE = "https://femme-fibre-catalog.onrender.com";
+        const CATALOG_API_BASE = "https://femme-fibre-app-catalog.onrender.com";
         const CLIENT_API_BASE = "https://femme-fibre-app-client.onrender.com";
 
         // CENTRALIZED SINGLE PAGE APPLICATION (SPA) ROUTER HUB
@@ -289,7 +289,7 @@
     
     try {
         // We are hard-coding the full URL here to bypass any environment variable issues
-        var response = await fetch('https://femme-fibre-catalog.onrender.com/catalog/collection');
+        var response = await fetch('https://femme-fibre-app-catalog.onrender.com/catalog/collection');
         
         if (!response.ok) {
             throw new Error('Network response was not ok');
