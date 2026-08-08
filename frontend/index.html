@@ -22,7 +22,7 @@
                 <a onclick="showPage('shop')" id="nav-shop">shop</a>
                 <a onclick="showPage('projects')" id="nav-projects">projects</a>
                 
-                <a onclick="showPage('about')" id="nav-about" style="display: none;">bespoke profile</a>
+                <a onclick="showPage('about')" id="nav-about">about</a>
                 <a onclick="showPage('staff-portal')" id="nav-staff" style="display: none; color: #a63232;">staff portal</a>
                 <a onclick="showPage('contact')" id="nav-contact">contact</a>
                 
@@ -259,19 +259,19 @@
             
             if (activeUser === 'admin@femmefibre.com') {
                 // ROLE: ADMIN IS LOGGED IN
-                document.getElementById('nav-about').style.display = 'none'; // Hide regular profile
+                
                 document.getElementById('nav-staff').style.display = 'inline-block'; // Reveal Secret Portal
                 document.getElementById('nav-logout').style.display = 'inline-block';
                 document.getElementById('nav-login').style.display = 'none';
             } else if (activeUser) {
                 // ROLE: REGULAR MEMBER IS LOGGED IN
-                document.getElementById('nav-about').style.display = 'inline-block';
+                 
                 document.getElementById('nav-staff').style.display = 'none'; // Keep Secret Portal hidden
                 document.getElementById('nav-logout').style.display = 'inline-block';
                 document.getElementById('nav-login').style.display = 'none';
             } else {
                 // ROLE: VISITOR (NOT LOGGED IN)
-                document.getElementById('nav-about').style.display = 'none';
+                
                 document.getElementById('nav-staff').style.display = 'none';
                 document.getElementById('nav-logout').style.display = 'none';
                 document.getElementById('nav-login').style.display = 'inline-block';
