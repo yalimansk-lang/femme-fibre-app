@@ -1,4 +1,5 @@
-// PRODUCTION CLOUD MICROSERVICE API BASE ENDPOINTS
+
+        // PRODUCTION CLOUD MICROSERVICE API BASE ENDPOINTS
         const CATALOG_API_BASE = "https://femme-fibre-app-catalog.onrender.com";
         const CLIENT_API_BASE = "https://femme-fibre-app-client.onrender.com";
 
@@ -347,3 +348,5 @@
             div.appendChild(document.createTextNode(str));
             return div.innerHTML;
         }
+
+    
